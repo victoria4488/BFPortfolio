@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Geo409 Map 02</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #623c72;
+            font-family: Lato, sans-serif;
+            color: #645858;
+        }
+        header {
+            padding: 6px 10%;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+            color: #fff;
+        }
+        h2 {
+            display: inline-block;
+            color: #fff;
+        }
+        #map {
+            width: 80%;
+            height: 540px;
+            margin: 10px auto;
+        }
+        footer {
+            padding: 6px 10%;
+            width: 80%;
+        }
+        p {
+            font-size: 1em;
+            color: #fff;
+        }
+        /* Additional style rules go here! */
+        
+   
+    
+    
+    </style>
+</head>
+
+<body>
+    <header>
+        
+        <h1> Hydroelectric Production </h1>
+        <h2>Elexctirc plants are shown within a 400km radius of Lexington, KY and produce less then 500 megawatts</h2>
+    </header>
+
+    <div id='map'></div>
+
+    
+    <footer>
+        <p>Map authored by Victoria Anderson </p>
+        <p>Pray for our survival</p>
+        
+        
+    </footer>
+        <!-- load external JS file here-->
+    
+    <script src="power-plants-assignment%20copy.js"></script>
+    
+    <script>
+        
+    
+        var map = L.map('map', {
+            center: [38.0297, -84.4947],
+            zoom: 6,
+        });
+        
+        var CartoDB_DarkMatter = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+	       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+	       subdomains: 'abcd',
+	       minZoom: 0,
+	       maxZoom: 18
+});
+            
+        map.addLayer(CartoDB_DarkMatter);
+        
+    var lexington = L.latLng(38.0297, -84.4947);
+        
+        plants.features.sort(function(a,b) {
+			return b.properties.capacity - a.properties.capacity;
+		});
+        
+        L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                 return L.circleMarker(latlng, {
+                     color: '#37b1ac',
+                     weight: 1,
+                     fillColor: '#85cbd1',
+                     fillOpacity: .6,
+                     radius: getRadius(feature.properties.source["Hydro"])
+                 });   
+            },
+            
+            //only place it would work.
+            
+            filter: function(feature, layer) {
+                
+                var plantLatLng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+                feature.properties.distanceFromLex = (plantLatLng.distanceTo(lexington)) / 1000;
+                
+                if((feature.properties.distanceFromLex < 400) && (feature.properties.source["Hydro"] &&
+                   feature.properties.source["Hydro"] < 500)) 
+                    return feature;   
+                
+            },
+
+            onEachFeature: function(feature,layer) {
+                var proper = feature.properties;
+                var info = "<b>"+proper.plant_name+"</b><br>"+
+                    proper.capacity.toLocaleString()+" MW<br>";
+                var sourceType = proper.source;
+                for(var fuel in sourceType){
+                    info+="<b>"+fuel+"</b>: "+sourceType[fuel].toLocaleString()+" MW<br>";
+                }
+                    info+= "This Hydroplant is located " + "<b>" +proper.distanceFromLex.toLocaleString() + " km" + "</b>" + " from Lexington, KY";
+                layer.bindPopup(info); 
+                
+                layer.on('mouseover', function() {
+                    layer.setStyle({
+                        fillColor: '#b5f8b5'
+                    });
+                });
+                layer.on('mouseout', function() {
+                    layer.setStyle({
+                        fillColor: '#dd6dff'
+                    });
+                });
+            }
+            
+        }).addTo(map);
+        
+        function getRadius(val) {
+            var radius = Math.sqrt(val/Math.PI);
+            return radius * 2;   
+        }  
+        
+        //my personal computer does not like to load the live preview! was going to come into the lab earlier this morning to just run it and make sure everything worked. 
+        
+    </script>
+    
+</body>
+
+</html>

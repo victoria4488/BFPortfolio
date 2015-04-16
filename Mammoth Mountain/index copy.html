@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Task H Starter</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #2d3490;
+            background-image:  url("https://s-media-cache-ak0.pinimg.com/236x/8f/c0/96/8fc096afa99a724dc70a4800e817cf42.jpg");
+            font-family: Lato, sans-serif;
+            color: #000;
+        }
+        header {
+            padding: 6px 10%;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+            color: #000;
+        }
+        h2 {
+            display: inline-block;
+            color: #000;
+        }
+        #map {
+            width: 80%;
+            height: 540px;
+            margin: 10px auto;
+        }
+        footer {
+            padding: 6px 10%;
+            width: 80%;
+        }
+        p {
+            font-size: 1em;
+            color: #000;
+        }
+        /* Additional style rules go here! */
+        
+        
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>You're King of the World!!</h1>
+        <h2>Just Don't get blown off the Mountain!!</h2>
+    </header>
+
+    <div id='map'></div>
+
+    <footer>
+        <p>Map authored by Victoria Anderson</p>
+        
+        <p>The darker blue dashed lines indicate chair lifts that are able to get you to the area of each mountain top.
+        </p>
+    </footer>
+
+    <script>
+        var map = L.map('map', {
+            center: [37.63,-119.03],
+            zoom: 13,
+        });
+       
+        var Stamen_Terrain = L.tileLayer('http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png', {
+	   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a    href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	subdomains: 'abcd',
+	minZoom: 4,
+	maxZoom: 18
+});
+        map.addLayer(Stamen_Terrain);
+        
+        // Begin writing/modifying code for Task H here
+        
+        var places = 
+           {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "stroke": "#555",
+        "stroke-width": 1,
+        "stroke-opacity": 1,
+        "fill": "#555555",
+        "fill-opacity": 0.25,
+        "Name": "Mammoth Mountain Ski Resort",
+        "Description": "This place is awesome.",
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.04690742492674,
+              37.64672341625982
+            ],
+            [
+              -119.04870986938477,
+              37.647131175362965
+            ],
+            [
+              -119.05214309692381,
+              37.6456360477074
+            ],
+            [
+              -119.04973983764648,
+              37.64216995421002
+            ],
+            [
+              -119.05102729797363,
+              37.64040286391042
+            ],
+            [
+              -119.0544605255127,
+              37.63958726959536
+            ],
+            [
+              -119.05643463134766,
+              37.63788808601502
+            ],
+            [
+              -119.05523300170898,
+              37.63503337011708
+            ],
+            [
+              -119.05171394348145,
+              37.634013802144764
+            ],
+            [
+              -119.0441608428955,
+              37.63190665067132
+            ],
+            [
+              -119.03008460998535,
+              37.628303962979885
+            ],
+            [
+              -119.02090072631836,
+              37.624293218436584
+            ],
+            [
+              -119.00991439819336,
+              37.626468564368594
+            ],
+            [
+              -119.00167465209961,
+              37.63258638348138
+            ],
+            [
+              -118.99815559387206,
+              37.63530525254704
+            ],
+            [
+              -119.0024471282959,
+              37.65066499381818
+            ],
+            [
+              -119.00665283203124,
+              37.650936819042435
+            ],
+            [
+              -119.01025772094727,
+              37.65066499381818
+            ],
+            [
+              -119.0123176574707,
+              37.64883014753026
+            ],
+            [
+              -119.01523590087889,
+              37.64910197947042
+            ],
+            [
+              -119.0173816680908,
+              37.64978155496791
+            ],
+            [
+              -119.0225315093994,
+              37.64998542640456
+            ],
+            [
+              -119.0265655517578,
+              37.65195615477212
+            ],
+            [
+              -119.02931213378906,
+              37.65426659729226
+            ],
+            [
+              -119.03308868408202,
+              37.65385887736528
+            ],
+            [
+              -119.03635025024413,
+              37.65161637775018
+            ],
+            [
+              -119.0390110015869,
+              37.650121340384764
+            ],
+            [
+              -119.0427017211914,
+              37.650732950217495
+            ],
+            [
+              -119.04364585876463,
+              37.65080090655468
+            ],
+            [
+              -119.04690742492674,
+              37.64672341625982
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -119.0273380279541,
+            37.65080090655468
+          ],
+          [
+            -119.02158737182617,
+            37.63625683321773
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -119.00261878967285,
+            37.64461662523225
+          ],
+          [
+            -119.02012825012207,
+            37.6388396336077
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -119.00768280029297,
+            37.642034025679294
+          ],
+          [
+            -119.01729583740233,
+            37.63727637041296
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -119.01145935058592,
+            37.647063215667906
+          ],
+          [
+            -119.01969909667969,
+            37.640198966171056
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -119.02467727661134,
+            37.641082518999966
+          ],
+          [
+            -119.02716636657713,
+            37.63353799897018
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -119.00845527648926,
+            37.62810003203902
+          ],
+          [
+            -119.02673721313477,
+            37.62932360929099
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -119.00442123413086,
+            37.63197462423212
+          ],
+          [
+            -119.01763916015625,
+            37.635882999407585
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -119.03162956237792,
+            37.64155827386301
+          ],
+          [
+            -119.03343200683594,
+            37.63047919153271
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+            "marker-color": "#7e7e7e",
+            "marker-size": "medium",
+            "marker-symbol": "",
+            "Name": "Mt. Top 1",
+            "Description": "Mountain",
+            "Radius": 100},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -119.03317451477052,
+          37.630275266560375
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+            "marker-color": "#7e7e7e",
+            "marker-size": "medium",
+            "marker-symbol": "",
+            "Name": "Mt. Top 2",
+            "Description": "Mountain",
+            "Radius": 100},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -119.02708053588866,
+          37.63313016525288
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+            "marker-color": "#7e7e7e",
+            "marker-size": "medium",
+            "marker-symbol": "",
+            "Name": "Mt. Top 3",
+            "Description": "Mountain",
+            "Radius": 100},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -119.0174674987793,
+          37.63673261898312
+        ]
+      }
+    }
+  ]
+}
+        var point = {
+            color: "#c3cafa",
+            fillOpacity: 0.9
+        };
+            
+        var line = {
+            color: "#5252de",
+            opacity: 8
+        };
+            
+        var polygon = {
+            color: "#315ec3",
+            fillOpacity: 0.5
+        };     
+       
+        
+        var featuresLeaflet = L.geoJson(places, {
+                
+            pointToLayer: function(feature, latlng) {
+                
+                return L.circle (latlng, feature.properties.Radius); 
+            },
+            style : function(feature) {
+            return { dashArray: "10, 4",
+                    weight: 3    
+                }
+            },
+                
+            onEachFeature: function(feature, layer) {
+                if (feature.geometry.type == "Point") {
+                    layer.setStyle(point);
+                    layer.bindPopup("<b>"+feature.properties.Name+"</b><b>" 
+                                    + "<br>" + feature.properties.Description)
+                 }
+                if (feature.geometry.type == "LineString") {
+                    layer.setStyle(line);
+                }
+                if (feature.geometry.type == "Polygon") {
+                    layer.setStyle(polygon);
+                    layer.bindPopup("<b>"+feature.properties.Name+"</b><b>" 
+                                    + "<br>" + feature.properties.Description)
+                }
+            }
+    }).addTo(map);  
+
+        </script>
+    
+    </body>
+
+</html>
