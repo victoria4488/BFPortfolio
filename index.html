@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Victoria Anderson's Portfolio</title>
+
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" /> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" />    
+<link href='http://fonts.googleapis.com/css?family=Imprima' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+    
+<style>
+    
+/* CSS style rules go here! */
+    body {  
+        background: #f5f5f5;   
+        font-family: 'Droid Sans', sans-serif;
+    }
+    header { 
+            width: 100%;
+            min-width: 800px;
+            margin: 0 auto;
+            background: #7546b4;
+            padding: 15px 0 20px;
+    }
+    h1 { 
+        font-family: 'Droid Sans', sans-serif;
+        color: #375671; 
+        width: 80%;
+        margin: 0 auto;
+        color: whitesmoke;
+    }
+    h2 { 
+        font-family: 'Droid Sans', sans-serif;
+        color: #375671;
+        width: 80%;
+        margin: 0 auto;
+        color: whitesmoke;
+    }
+        h3 {
+        font-family: 'Droid Sans', sans-serif;
+        color: #3a3067
+    }
+    p { 
+        font-size: .9em; 
+        color: #3a3067; 
+    }
+    ul {
+        list-style-type: none; 
+        font-size: .9em; 
+        color: #3a3067; 
+        line-height: 1.6em;
+    }
+    a, a:visited {   
+        color: #9324a2;
+    }
+    .project {
+        width: 80%;
+        min-width: 800px;
+        height: 100%;
+        margin: 35px auto;
+    }
+    .project:after{
+        content: "";
+        display: table;
+        clear: both; 
+    }
+    .project-image {
+        width: 388px;
+        height: 240px;
+        background: white;
+        float: left;
+        margin-right: 20px;
+        border: 2px solid #dddddd;
+    }
+</style>
+</head>
+
+<body>
+
+<!--    <p>Hello World! I'm going to be a portfolio page.</p>-->
+    
+    <header>
+    <h1>Geo409: Advanced GIS</h1>
+    <h2>Web Mapping at the University of Kentucky</h2>
+</header>
+    
+<section class="project">
+    <image src="images/kentucky_unemployment_small.png" alt="snapshot of hydro map" class="project-image" />
+    <h3>KY's Closest Hydroelectric Plants</h3>
+    <p>This chloropleth map shows the location and capacity of Hydroelectric Power in the surrounding Northern KY area.</p>
+    <p>This interactive map show each power plant and then tells the user how far away it is from Lexington KY as well as its electric output.</p>
+    <ul>
+        <li>See the map: <a href="ky_hydro/">KY's Closest Hydroelectric Plants</a></li>
+        <li>Data Source: <a href="http://www.bls.gov/data/">Bureau of Labor Statistics</a></li>
+        <li>See the <a href="https://github.com/victoria4488/thecuriouscactus/tree/master/ky_hydro">code for this map hosted on GitHub</a></li>
+    <ul>
+</section>
+        
+<section class="project">
+    <image src="images/mammoth_mt.png" alt="snapshot of mammoth mt" class="project-image" />
+    <h3>Mammoth Mt.</h3>
+    <p> This map shows each chair lift in the Mammoth Mt Ski Resort that will get you to the three tallest points on the mountain.</p>
+    <p>Each shape file on this map was created using geojson. </p>
+    <ul>
+        <li>See the map: <a href="mammoth_mt/">Mammoth Mt.</a></li>
+        <li>Data Source: <a href="geojson.io">GeoJSON</a></li>
+        <li>See the <a href="https://github.com/victoria4488/thecuriouscactus/tree/master/mammoth_mt">code for this map hosted on GitHub</a></li>
+    <ul>
+</section>
+        
+<section class="project">
+    <image src="images/nations_plants.png" alt="snapshot of US powerplant map" class="project-image" />
+    <h3>US Power Generation</h3>
+    <p>This chloropleth map shows the location and capacity of Solar, Hydro and Wind powered powerplants in the Unites States</p>
+    <p>This interactive map allows the user to isolate groups of powerplants based on location or type.</p>
+    <ul>
+        <li>See the map: <a href="nations_power/">US Electric Power Generation</a></li>
+        <li>Data Source: <a href="http://www.bls.gov/data/">Bureau of Labor Statistics</a></li>
+        <li>See the <a href="https://github.com/victoria4488/thecuriouscactus/tree/master/nations_power">code for this map hosted on GitHub</a></li>
+    <ul>
+</section>   
+        
+<section class="project">
+    <image src="images/lake_erie.png" alt="lets go ice fishing!!" class="project-image" />
+    <h3>IN PROGRESS: Ice Coverage of Lake Erie, 20??-20??</h3>
+    <p>This interactive map will allow the user to choose a winter year and use a slider to view the percent ice coverage of Lake Erie with the lake being sperated into 4 parts: North Shore, South Shore, East End and West End. </p>
+    
+    <ul>
+        <li>See the map: <a href=""> Will be updated</a></li>
+        <li>Data Source: <a href="http://www.weather.gov/buf/lakeeffect">NOAA</a></li>
+        <li>See the <a href="">code for this map hosted on GitHub</a></li>
+    <ul>
+</section> 
+    
+</body>
+</html>
