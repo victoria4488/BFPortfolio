@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Ice Coverage</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.0/papaparse.min.js"></script>
+    <script src="simple_statistics.js"></script>
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: whitesmoke;
+            font-family: Lato, sans-serif;
+            color: #0D0000;
+        }
+        header {
+            padding: 6px 10%;
+        }
+        h1 {
+            position: absolute;
+            z-index: 100;
+            top: 10px;
+            left: 90px;
+            padding: 16px 15px;
+            margin: 0;
+            color: whitesmoke;
+            font-size: 1.5em;
+            background-image:  url("http://images.fanpop.com/images/image_uploads/ice-wallpapers-400674_1024_768.jpg");
+            border-radius: 5px; 
+        }
+        footer {
+            padding: 6px 10%;
+            width: 80%;
+        }
+        p {
+            font-size: 1em;
+            color: whitesmoke;
+        }
+        #map {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            bottom: 0;
+        }
+        
+        .legend {
+            padding: 6px 8px;
+            font-size: 1em;
+            background-image:  url("http://images.fanpop.com/images/image_uploads/ice-wallpapers-400674_1024_768.jpg");
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        .legend h3 {
+            font-size: 1.1em;
+            font-weight: normal;
+            color: whitesmoke;
+            margin: 0;
+        }
+        .legend ul {
+            padding: 0;
+        }
+        .legend li {
+            list-style-type: none;
+            height: 22px;
+        }
+        .legend span {
+            width: 20px;
+            height: 20px;
+            float: left;
+            margin-right: 10px;
+        }
+        #ui-controls {
+            width: 176px;   
+            padding: 8px 15px 8px 15px;
+            background-image:  url("http://images.fanpop.com/images/image_uploads/ice-wallpapers-400674_1024_768.jpg");
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px; 
+            color: whitesmoke;
+        }
+        .year-slider {
+            width: 100%;
+        }
+        #ui-controls .min {
+            float: left;   
+        }
+        #ui-controls .max {
+            float: right;
+        }
+        label {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Great Lakes Ice Coverage</h1>
+    <div id='map'></div>
+    <footer>
+        <p>Map authored by Victoria Anderson</p>
+        
+        <p>The darker blue dashed lines indicate chair lifts that are able to get you to the area of each mountain top.
+        </p>
+    </footer>
+    <div id="ui-controls">
+        <label><span class="min">1/1/2010</span><span class="max">1/31/2015</span>
+            <input type="range" min = "1/1/2010", max= "1/31/2015", 
+               value = "1/1/2010", step= "1", class="year-slider"></input>
+        </label></div>
+    
+    <script>
+        
+        var options = {
+            center: [42.2, -81.2],
+            zoom: 8,
+            minZoom: 4,
+            maxZoom: 11,
+            dragging: true,
+            zoomControl: true
+        }
+        var map = L.map('map', options);
+        
+        // loaded map tiles
+        var Esri_WorldPhysical = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: US National Park Service',
+	maxZoom: 8
+});
+        
+        var data = {};
+        
+        map.addLayer(Esri_WorldPhysical);
+        var attribute = "1/1/2010",
+            dataLayer;
+        
+       $.getJSON("sections.json", function(lake) {
+            // loaded data files with AJAX
+            Papa.parse('INFOICE.csv', {
+                download: true,
+                header: true,
+                complete: function(data) {
+                    //loaded csv using papa parse
+                    //console.log(lake);
+                    //console.log(lake);
+                    processData(lake, data);
+// sent county lines and unemployment data to processData function
+            }
+        }); // end papa 
+            //add L.geoJson
+       
+            
+             //call function to draw chloropleth map (update)
+    }); 
+ 
+//        // function to process/bind data
+        function processData(lake, data) {
+            for (var SECTION in lake.features) {
+
+                var props = lake.features[SECTION].properties;
+
+                for(var d in data.data) {
+                    if(props.NUMM == data.data[d].NUM){
+                        lake.features[SECTION].properties = data.data[d];
+                        break;
+                    }
+
+                }
+            }
+            //console.log(lake);
+            drawMap(lake);
+        }
+        
+        function drawMap (SECTION){
+             dataLayer = L.geoJson(SECTION, {
+                style: function(feature) {
+                return {
+                    color: 'whitesmoke',
+                    weight: 0.9,
+                    fillOpacity: 0.8,
+                    fillColor: '#908cf5',
+                    
+                }
+             }
+             }).addTo(map);
+            drawLegend(); //call drawLegend  
+            updateMap();  //call updateMap
+        }
+        
+        
+        function updateMap () { //define drawMap function
+            var breaks = getClassBreaks();
+        //console.log(dataLayer);
+            dataLayer.eachLayer(function(layer){
+                layer.setStyle({
+                    fillColor: getColor(layer.feature.properties[attribute], breaks)
+                });
+                layer.on('mouseover', function(){
+                    layer.setStyle({
+                        fillColor:'rgba(117, 126, 237, 0.18)'
+                    })
+                });
+                layer.on('mouseout', function() {
+                    layer.setStyle({
+                        fillColor: getColor(layer.feature.properties[attribute], breaks)
+                    })
+                });
+            });
+            ;
+            createSliderUI();
+            updateLegend(breaks);
+        }
+        
+        function getClassBreaks() {
+            var values = [];
+            dataLayer.eachLayer(function(layer) {
+                var value = layer.feature.properties[attribute];
+//                console.log(layer.feature.properties);
+                values.push(Number(value));
+            });
+            var breaks = ss.quantile(values, [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
+            //console.log(breaks);
+            return breaks;
+        }
+        
+        // function to get the color value
+        function getColor(attribute, breaks){
+            if(attribute <= breaks[0]) {
+                return 'rgba(5, 35, 245, 0.98)';
+            } else if(attribute <= breaks[1]) {
+                return 'rgba(14, 6, 216, 0.83)';
+            } else if(attribute <= breaks[2]) {
+                return 'rgba(12, 12, 242, 0.72)';
+            } else if(attribute <= breaks[3]) {
+                return 'rgba(83, 76, 255, 0.74)';          
+            } else if(attribute <= breaks[4]) {
+                return 'rgba(61, 61, 255, 0.61)';
+            } else if(attribute <= breaks[5]) {
+                return 'rgba(113, 124, 253, 0.74)';
+            } else if(attribute <= breaks[6]) {
+                return 'rgba(122, 122, 250, 0.78)';
+            } else if(attribute <= breaks[7]) {
+                return 'rgba(124, 139, 255, 0.81)';
+            } else if(attribute <= breaks[8]) {
+                return 'rgba(151, 171, 255, 0.83)';
+            } else if(attribute <= breaks[9]) {
+                return 'rgba(166, 194, 255, 0.87)';
+            } else if(attribute <= breaks[10]) {
+                return 'rgba(239, 238, 255, 0.92)';
+            } 
+            };
+        // define function to draw the legend
+        function drawLegend(){
+        // create a new EMPTY Leaflet control object, and position it top left
+            var legend = L.control({position: 'topleft'});
+        // when the legend is added to the map
+            legend.onAdd = function (map) {
+                // create a new HTML <div> element and give it a class name of "legend"
+                var div = L.DomUtil.create('div', 'legend');
+            // return the populated div to be added to the map
+            return div;
+        };
+        // add the legend to the map
+        legend.addTo(map);
+    }
+        
+        //function to update the legend
+        function updateLegend(breaks) {
+             //populate legend with HTML labels
+            $(".legend").html("<h3>Ice percentage in " + attribute + "</h3><ul>"); 
+            // for each of our breaks
+            for (var i = 0; i < breaks.length-1; i++) {
+                // figure out the color for each break value,
+                // including the lower range value
+                var color = getColor(breaks[i + 1], breaks);
+                // concatenate a list item (<li>) to the div containing 
+                // an <i> tag styled with the color and include the range values
+                // of that particular classification group
+                $(".legend ul").append(
+                    '<li><span style="background:' + color + '"></span> ' +
+                    (breaks[i]) + ' &mdash; ' + 
+                    (breaks[i + 1]) + '</li>');
+            }
+            // close the un-ordered list
+            $(".legend").append("</ul>");
+        }
+        
+        // function to create the range slider
+        function createSliderUI() {
+            // create a Leaflet control object and store a reference to it in a variable
+            var sliderControl = L.control({ position: 'topright'} );
+            // when we add this control object to the map
+            sliderControl.onAdd = function(map) {
+                // select an existing DOM element with an id of "ui-controls"
+                var slider = L.DomUtil.get("ui-controls");
+                    // when the user clicks on the slider element
+                    L.DomEvent.addListener(slider, 'mousedown', function(e) { 
+                        // prevent the click event from bubbling up to the map
+                        L.DomEvent.stopPropagation(e); 
+                    });
+                // return the slider from the onAdd method
+                return slider;
+            }
+    // add the control object containing our slider element to the map
+        sliderControl.addTo(map);
+        
+        $(".year-slider")
+            .on('input change', function() {
+                attribute = $(this).val();
+                updateMap();
+            });
+        }
+        
+        
+        
+	
+        
+    </script>
+    
+</body>
+
+</html>
